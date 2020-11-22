@@ -33,7 +33,7 @@ export default {
       },
       { hid: 'theme-color', name: 'theme-color', content: '#FFFFFF' }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon_main.ico' }]
   },
   /*
    ** Customize the progress-bar color
