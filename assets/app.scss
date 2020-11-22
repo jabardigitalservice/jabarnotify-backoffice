@@ -1,0 +1,78 @@
+#main-logo {
+  &.logo__small {
+    padding: 0;
+    .v-image {
+      .v-responsive__sizer {
+        padding-bottom: 40px !important;
+      }
+      &__image {
+        background-position: -6px !important;
+      }
+    }
+  }
+}
+.pikobar-nav {
+  &.v-list--nav {
+    .v-item-group {
+      > a {
+        text-decoration: none;
+      }
+    }
+    .v-list-item{
+      border-radius: 0;
+      &.v-list-item--active{
+        border-left: 4px solid #1976d2;
+      }
+      &:before, &:after {
+        border-radius: 0;
+      }
+    }
+  }
+}
+.pkbr-timepicker {
+  .v-picker {
+    border-radius: 0;
+  }
+  .v-picker__title {
+    .v-time-picker-title {
+      justify-content: flex-start;
+    }
+    padding: 6px;
+    .v-time-picker-title__time .v-picker__title__btn, .v-time-picker-title__time span {
+      height: 32px;
+      font-size: 32px;
+    }
+  }
+}
+.bg-navbar {
+  background: linear-gradient(90deg, #0286C2 4.69%, #01BCDA 97.9%);
+}
+.pkbr-table {
+  .v-data-table__wrapper {
+    max-height: calc(100vh - 230px);
+  }
+  &.sticky-last {
+    .v-data-table__wrapper {
+      > table {
+        > thead, tbody{
+          > tr {
+            th:last-child, td:last-child {
+              position: sticky;
+              right: 0;
+              background-color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.v-application--is-ltr {
+  .pkbr-table {
+    .v-data-footer__select {
+      .v-select {
+        margin-top: 5px;
+      }
+    }
+  }
+}
