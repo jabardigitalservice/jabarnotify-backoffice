@@ -22,10 +22,13 @@
           <v-col cols="auto">
             <v-btn color="primary" @click="createNewMessage()">
               <v-icon class="mr-1"> mdi-plus-circle </v-icon>
-              Compose messages
+              Create Blast Notifications
             </v-btn>
           </v-col>
         </div>
+      </template>
+      <template v-slot:[`item.num`]="{ item }">
+        {{ item._num }}
       </template>
       <template v-slot:[`item.recipients`]="{ item }">
         <v-layout justify-start>
@@ -35,14 +38,17 @@
           <template v-else> {{ item.emailAddress || '-' }} </template>
         </v-layout>
       </template>
+      <template v-slot:[`item.createdAt`]="{ item }">
+        <v-layout justify-start>
+          {{
+            item.createdAt
+              ? $dateFns.format(new Date(item.createdAt), 'dd MMMM yyyy HH:mm')
+              : '-'
+          }}
+        </v-layout>
+      </template>
       <template v-show="false" v-slot:[`item.actions`]="{ item }">
-        <v-icon
-          v-if="allow.includes('view-events')"
-          class="mr-2"
-          @click="$router.push(`messages/${item.id}`)"
-        >
-          mdi-card-search
-        </v-icon>
+        <v-icon class="mr-2" @click="detailMessage(item._id)"> mdi-eye </v-icon>
         <v-icon
           v-if="allow.includes('edit-events')"
           class="mr-2"
@@ -101,11 +107,13 @@ import {
 import { getChipColor } from '@/utilities/formater'
 
 const headers = [
-  // { text: 'ID', value: 'id', width: 80 },
-  { text: 'Body', value: 'body', width: 300 },
-  { text: 'Type', value: 'type' },
-  { text: 'Recipients', value: 'recipients' }
-  // { text: 'Actions', value: 'actions', sortable: false, width: 150 }
+  { text: 'No', value: '_num' },
+  { text: 'Notify Subject', value: 'subject' },
+  { text: 'Notify Type', value: 'type' },
+  { text: 'Total Recipients', value: 'recipientTotal', align: 'center' },
+  { text: 'Created by', value: 'createdBy.username' },
+  { text: 'Created at', value: 'createdAt' },
+  { text: 'Actions', value: 'actions', sortable: false, width: 150 }
 ]
 
 export default {
@@ -141,25 +149,28 @@ export default {
       return CONFIRM_DELETE + this.selectedEvent.id
     },
     records() {
-      return this.$store.getters['messages/getList']
+      return this.$store.getters['blastNotifications/getList']
+    },
+    pagination() {
+      return this.$store.getters['blastNotifications/getPagination']
     },
     loading() {
-      return this.$store.getters['messages/getLoading']
+      return this.$store.getters['blastNotifications/getLoading']
     },
     options: {
       set(value) {
-        this.$store.commit('messages/SET_TABLE_OPTIONS', value)
+        this.$store.commit('blastNotifications/SET_TABLE_OPTIONS', value)
       },
       get() {
-        return this.$store.getters['messages/getTableOption']
+        return this.$store.getters['blastNotifications/getTableOption']
       }
     },
     totalItems() {
-      return this.$store.getters['messages/getTotalData']
+      return this.$store.getters['blastNotifications/getTotalData']
     },
     stat: {
       async set(value) {
-        await this.$store.dispatch('messages/resetOptions')
+        await this.$store.dispatch('blastNotifications/resetOptions')
         this.options = {
           ...this.options,
           keyWords: this.searchKey,
@@ -172,7 +183,7 @@ export default {
     },
     searchKey: {
       async set(value) {
-        await this.$store.dispatch('messages/resetOptions')
+        await this.$store.dispatch('blastNotifications/resetOptions')
         this.options = {
           ...this.options,
           status: this.stat,
@@ -221,6 +232,9 @@ export default {
     createNewMessage() {
       this.$emit('createNewMessage', 'tes')
     },
+    detailMessage(id) {
+      this.$emit('detailMessage', id)
+    },
     formatTanggal(startTanggal, endTanggal) {
       const start = this.$dateFns.format(new Date(startTanggal), 'dd MMM yyyy')
       const end = this.$dateFns.format(new Date(endTanggal), 'dd MMM yyyy')
@@ -241,12 +255,12 @@ export default {
     },
     async remove(id) {
       try {
-        await this.$store.dispatch('messages/delete', id)
+        await this.$store.dispatch('blastNotifications/delete', id)
         this.$toast.show({
           message: SUCCESS_DELETE,
           type: 'success'
         })
-        await this.$store.dispatch('messages/getList')
+        await this.$store.dispatch('blastNotifications/getList')
         this.deleteModal = false
       } catch (error) {
         this.$toast.show({

@@ -143,22 +143,28 @@ export const actions = {
         },
         (value, key) => snakeCase(key)
       )
-      const { items } = await this.$axios.$get('/notifications', {
+      const { items, meta } = await this.$axios.$get('/notifications', {
         params: query,
         progress: false
       })
+
+      const base = (meta.currentPage - 1) * meta.perPage
+      for (const i in items) {
+        items[i]._num = base + parseInt(i) + 1
+      }
       commit('SET_DATA', items)
-      // commit('SET_PAGINATION', {
-      //   page: parseInt(meta.current_page),
-      //   itemsPerPage: parseInt(meta.per_page),
-      //   total: parseInt(meta.total)
-      // })
+      commit('SET_PAGINATION', {
+        page: parseInt(meta.currentPage),
+        itemsPerPage: parseInt(meta.perPage),
+        total: parseInt(meta.totalCount)
+      })
     } catch (e) {
       //
     } finally {
       commit('SET_LOADING', false)
     }
   },
+
   async store({ commit }, payload) {
     commit('SET_LOADING', true)
     try {
@@ -166,6 +172,31 @@ export const actions = {
       return res
     } catch (error) {
       throw new Error(error)
+    } finally {
+      commit('SET_LOADING', false)
+    }
+  },
+
+  async import({ commit }, { formData }) {
+    commit('SET_LOADING_IMPORT', true)
+    try {
+      const res = await this.$axios.$post('/notifications/import', formData)
+      return res
+    } catch (error) {
+      throw new Error(error)
+    } finally {
+      commit('SET_LOADING', false)
+    }
+  },
+
+  async getCurrent({ commit, state }, notifId) {
+    commit('SET_LOADING', true)
+
+    try {
+      const { item } = await this.$axios.$get(`/notifications/${notifId}`)
+      commit('SET_CURRENT', item)
+    } catch (e) {
+      //
     } finally {
       commit('SET_LOADING', false)
     }

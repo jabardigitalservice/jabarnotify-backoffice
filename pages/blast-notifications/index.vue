@@ -12,16 +12,21 @@
           }}</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
-          <MessagesForm @createdNotification="onCreatedNotification" />
+          <BlastNotificationsView v-if="viewing" :data="getCurrent" />
+          <BlastNotificationsForm
+            v-if="editing"
+            @createdNotification="onCreatedNotification"
+          />
         </v-card-text>
       </v-card>
     </v-dialog>
     <v-layout>
-      <MessagesDatatable
+      <BlastNotificationsDatatable
         title="Kegiatan"
         router-name="events"
         :allow="permissions"
         @createNewMessage="onCreateNewMessage"
+        @detailMessage="onDetailMessage"
         @optionChanged="onOptionChange"
       />
     </v-layout>
@@ -31,31 +36,36 @@
 <script>
 import { pickBy, identity } from 'lodash'
 import { mapGetters } from 'vuex'
-import MessagesDatatable from '@/components/messages/Datatable'
-import MessagesForm from '@/components/messages/Form'
+import BlastNotificationsDatatable from '@/components/blast-notifications/Datatable'
+import BlastNotificationsForm from '@/components/blast-notifications/Form'
+import BlastNotificationsView from '@/components/blast-notifications/View'
 import { NOTIFICATION_SUCCESS_CREATE } from '@/utilities/constant'
 
 export default {
   middleware: 'auth',
   components: {
-    MessagesDatatable,
-    MessagesForm
+    BlastNotificationsDatatable,
+    BlastNotificationsForm,
+    BlastNotificationsView
   },
 
   data() {
     return {
-      editing: false
+      notifDetail: {},
+      editing: false,
+      viewing: false
     }
   },
 
   computed: {
     ...mapGetters('auth', ['permissions']),
+    ...mapGetters('blastNotifications', ['getCurrent', 'getLoading']),
     popup: {
       get() {
-        return this.editing
+        return this.editing || this.viewing
       },
       set(value) {
-        this.editing = value
+        this.editing = this.viewing = value
       }
     },
     popupColor() {
@@ -63,7 +73,7 @@ export default {
     },
     popupTitle() {
       if (this.editing) {
-        return 'Create new message'
+        return 'Create blast notifications'
       }
       return ''
     }
@@ -73,7 +83,7 @@ export default {
     '$route.query': {
       handler(value, oldValue) {
         this.$store.dispatch(
-          'messages/getRecords',
+          'blastNotifications/getRecords',
           value.keyWords !== oldValue.keyWords || value.page !== oldValue.page
         )
       },
@@ -85,7 +95,7 @@ export default {
     this.$store.dispatch('breadcrumbs/setItems', [
       {
         disabled: true,
-        text: 'Messages'
+        text: 'Blast Notifications'
       }
     ])
   },
@@ -95,7 +105,11 @@ export default {
       this.index = -1
       this.editing = true
     },
-    onCreatedNotification(error) {
+    onDetailMessage(value) {
+      this.$store.dispatch('blastNotifications/getCurrent', value)
+      this.viewing = true
+    },
+    async onCreatedNotification(error) {
       this.index = -1
       this.editing = false
       if (!error) {
@@ -105,6 +119,21 @@ export default {
         })
       } else {
         this.$toast.show({ message: error, type: 'error' })
+      }
+      try {
+        await this.$store.dispatch('blastNotifications/getList')
+      } catch (error) {}
+    },
+    async getCurrent({ commit, state }, idEvent) {
+      commit('SET_LOADING', true)
+
+      try {
+        const { data } = await this.$axios.$get(`/rdt/events/${idEvent}`)
+        commit('SET_CURRENT', data)
+      } catch (e) {
+        //
+      } finally {
+        commit('SET_LOADING', false)
       }
     },
     onOptionChange(value) {
@@ -126,7 +155,7 @@ export default {
 
   head() {
     return {
-      title: 'Messages'
+      title: 'Blast Notifications'
     }
   }
 }

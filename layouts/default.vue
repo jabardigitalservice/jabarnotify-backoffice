@@ -7,7 +7,7 @@
         </v-list-item> -->
         <v-list-item two-line :class="miniVariant && 'px-0'">
           <v-icon color="blue" aria-hidden="false"> mdi-message-draw </v-icon>
-          <span class="font-italic">Jabarnotify Backoffice</span>
+          <span class="">Jabar Notify Backoffice</span>
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
@@ -110,15 +110,15 @@ export default {
         },
         {
           icon: 'mdi-message',
-          title: 'Send Messages',
-          to: '/messages',
+          title: 'Blast Notifications',
+          to: '/blast-notifications',
           permission: 'list-applicants'
         }
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Jabarnotify Backoffice',
+      title: 'Jabar Notify Backoffice',
       showToast: false,
       typeToast: 'success',
       messageToast: '',
