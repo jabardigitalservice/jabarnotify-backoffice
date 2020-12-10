@@ -53,7 +53,7 @@
                   :headers="tableHeaders"
                   :items="recipients"
                   item-key="_id"
-                  class="elevation-1"
+                  class="elevation-1 font-weight-light"
                 ></v-data-table>
               </v-col>
             </v-row>

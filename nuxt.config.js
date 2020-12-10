@@ -33,12 +33,12 @@ export default {
       },
       { hid: 'theme-color', name: 'theme-color', content: '#FFFFFF' }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon_main.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon_dark.ico' }]
   },
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#2196F3' },
+  loading: { color: '#ffffff' },
   /*
    ** Global CSS
    */
@@ -85,7 +85,7 @@ export default {
     theme: {
       themes: {
         light: {
-          primary: colors.blue.darken2
+          primary: colors.black
         },
         dark: {
           primary: colors.blue.darken2,

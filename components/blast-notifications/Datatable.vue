@@ -2,7 +2,7 @@
 <template>
   <v-flex xs12 md12>
     <v-data-table
-      class="v-card v-sheet pkbr-table sticky-last"
+      class="v-card v-sheet pkbr-table sticky-last font-weight-light"
       :headers="headers"
       :items="records"
       :_server-items-length="totalItems"
@@ -20,9 +20,15 @@
         <div class="d-flex">
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn color="primary" @click="createNewMessage()">
-              <v-icon class="mr-1"> mdi-plus-circle </v-icon>
-              Create Blast Notifications
+            <v-btn
+              small
+              title="Create Blast Notifications"
+              fab
+              dark
+              @click="createNewMessage()"
+              color="dark"
+            >
+              <v-icon dark>mdi-plus-circle</v-icon>
             </v-btn>
           </v-col>
         </div>
