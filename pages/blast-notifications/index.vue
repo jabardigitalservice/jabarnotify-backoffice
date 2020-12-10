@@ -69,7 +69,7 @@ export default {
       }
     },
     popupColor() {
-      return 'blue'
+      return 'primary'
     },
     popupTitle() {
       if (this.editing) {

@@ -6,13 +6,13 @@
           <v-img src="/jds-logo.png" />
         </v-list-item> -->
         <v-list-item two-line :class="miniVariant && 'px-0'">
-          <v-icon color="blue" aria-hidden="false"> mdi-message-draw </v-icon>
-          <span class="">Jabar Notify Backoffice</span>
+          <!-- <v-icon color="blue" aria-hidden="false"> mdi-message-draw </v-icon> -->
+          <span class="font-weight-light">{{ title }}</span>
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
       <v-list nav dense :class="!miniVariant && 'px-0'" class="pikobar-nav">
-        <v-list-item-group color="primary">
+        <v-list-item-group color="primary" active-class="black--text">
           <v-list-item
             v-for="(item, i) in menuItems"
             :key="i"
@@ -23,7 +23,10 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
+              <v-list-item-title
+                class="font-weight-light"
+                v-text="item.title"
+              />
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -44,7 +47,7 @@
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title class="font-weight-light" v-text="title" />
     </v-app-bar>
     <v-main class="blue-grey lighten-5">
       <v-container>
@@ -54,7 +57,9 @@
           large
         >
           <template v-slot:item="{ item }">
-            <span v-if="item.disabled" class="text-h6">{{ item.text }}</span>
+            <span v-if="item.disabled" class="font-weight-light">{{
+              item.text
+            }}</span>
             <nuxt-link v-else class="text-h6 v-breadcrumbs__item" :to="item.to">
               {{ item.text }}
             </nuxt-link>
@@ -118,7 +123,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Jabar Notify Backoffice',
+      title: process.env.appName,
       showToast: false,
       typeToast: 'success',
       messageToast: '',

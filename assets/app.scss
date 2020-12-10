@@ -21,7 +21,7 @@
     .v-list-item{
       border-radius: 0;
       &.v-list-item--active{
-        border-left: 4px solid #1976d2;
+        border-left: 4px solid #262626;
       }
       &:before, &:after {
         border-radius: 0;
@@ -45,7 +45,7 @@
   }
 }
 .bg-navbar {
-  background: linear-gradient(90deg, #0286C2 4.69%, #0286C2 97.9%);
+  background: linear-gradient(90deg, #262626 4.69%, #262626 100%);
 }
 .pkbr-table {
   .v-data-table__wrapper {
