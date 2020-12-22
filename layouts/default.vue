@@ -118,6 +118,12 @@ export default {
           title: 'Blast Notifications',
           to: '/blast-notifications',
           permission: 'list-applicants'
+        },
+        {
+          icon: 'mdi-help',
+          title: 'How to use',
+          to: '/how-to-use',
+          permission: 'access-backoffice'
         }
       ],
       miniVariant: false,
