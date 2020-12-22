@@ -37,7 +37,15 @@
         />
       </v-col>
       <v-col cols="12">
-        <v-checkbox v-model="isImport" :label="`import xls?`"></v-checkbox>
+        <v-checkbox v-model="isImport" :label="`import excel`"></v-checkbox>
+        <v-btn
+          x-small
+          target="_blank"
+          :href="'https://drive.google.com/drive/folders/1s6T-hpRNzJMvknCuryMqWydPNEOskhKk?usp=sharing'"
+          v-show="isImport"
+          >Download template
+          <v-icon right dark> mdi-cloud-upload </v-icon>
+        </v-btn>
       </v-col>
       <v-col cols="12" v-if="isImport">
         <pkbr-input
