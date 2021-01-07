@@ -1,13 +1,13 @@
 <template>
   <v-row>
     <v-col cols="12" md="4">
-      <Summary :title="'SMS'" />
+      <Summary :title="'SMS'" :total="item.sms" />
     </v-col>
     <v-col cols="12" md="4">
-      <Summary :title="'WHATSAPP'" />
+      <Summary :title="'WHATSAPP'" :total="item.whatsapp" />
     </v-col>
     <v-col cols="12" md="4">
-      <Summary :title="'EMAIL'" />
+      <Summary :title="'EMAIL'" :total="item.email" />
     </v-col>
   </v-row>
 </template>
@@ -27,8 +27,20 @@ export default {
     }
   },
 
-  created() {
-    this.$store.dispatch('breadcrumbs/setItems', [])
+  computed: {
+    item() {
+      return this.$store.getters['blastNotifications/getSummary']
+    }
+  },
+
+  async created() {
+    await this.$store.dispatch('blastNotifications/getSummary')
+    this.$store.dispatch('breadcrumbs/setItems', [
+      {
+        disabled: true,
+        text: 'Dashboard'
+      }
+    ])
   },
 
   head() {
