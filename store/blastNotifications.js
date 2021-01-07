@@ -6,6 +6,7 @@ import { DEFAULT_FILTER, DEFAULT_PAGINATION } from '@/utilities/constant'
 export const state = () => ({
   loading: false,
   data: [],
+  summary: {},
   current: null,
   pagination: { ...DEFAULT_PAGINATION },
   filter: { ...DEFAULT_FILTER },
@@ -20,6 +21,10 @@ export const mutations = {
   SET_DATA(state, payload) {
     const s = state
     s.data = payload
+  },
+  SET_SUMMARY(state, payload) {
+    const s = state
+    s.summary = payload
   },
   SET_CURRENT(state, payload) {
     const s = state
@@ -73,6 +78,10 @@ export const getters = {
   getList(state) {
     const s = state
     return s.data
+  },
+  getSummary(state) {
+    const s = state
+    return s.summary
   },
   getCurrent(state) {
     const s = state
@@ -195,6 +204,19 @@ export const actions = {
     try {
       const { item } = await this.$axios.$get(`/notifications/${notifId}`)
       commit('SET_CURRENT', item)
+    } catch (e) {
+      //
+    } finally {
+      commit('SET_LOADING', false)
+    }
+  },
+
+  async getSummary({ commit, state }) {
+    commit('SET_LOADING', true)
+
+    try {
+      const { item } = await this.$axios.$get('/notifications/summary')
+      commit('SET_SUMMARY', item)
     } catch (e) {
       //
     } finally {

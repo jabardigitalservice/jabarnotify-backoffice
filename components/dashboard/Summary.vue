@@ -2,15 +2,15 @@
   <v-card class="statistic-new-active mx-auto height-100" outlined>
     <v-card-text class="card">
       <div class="head mb-3">{{ title }}</div>
-      <div class="total mb-3">0</div>
+      <div class="total mb-3">{{ total.sent + total.failed }}</div>
       <div class="information">
         <div>
           <span class="sub-total">sent</span>
-          <span class="sub-label">0</span>
+          <span class="sub-label">{{ total.sent }}</span>
         </div>
         <div>
           <span class="sub-total">failed</span>
-          <span class="sub-label">0</span>
+          <span class="sub-label">{{ total.failed }}</span>
         </div>
       </div>
     </v-card-text>
@@ -23,6 +23,15 @@ export default {
     title: {
       type: String,
       default: null
+    },
+    total: {
+      type: Object,
+      default: () => {
+        return {
+          sent: 0,
+          failed: 0
+        }
+      }
     }
   }
 }
